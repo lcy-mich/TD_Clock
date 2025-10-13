@@ -9,6 +9,7 @@
 TFT_eSPI tft = TFT_eSPI();
 
 #include "FastTrig.h"
+#define PI 3.14159
 
 #include "time.h"
 #define NTP "pool.ntp.org"
@@ -17,6 +18,7 @@ TFT_eSPI tft = TFT_eSPI();
 
 struct tm t_struct;
 char t_str[9];
+float lastTheta = 0;
 bool isAnalog = false;
 bool clearedScreen = false;
 
@@ -75,9 +77,15 @@ void render() {
     uint8_t h_centre = HEIGHT*.5;
     uint8_t w_centre = WIDTH*.5;
 
-    uint8_t radius = h_centre;
+    uint8_t radius = h_centre-1;
+    
+    float theta = 3*60;
+    if (theta - lastTheta > 1) {
+      tft.fillSmoothCircle(w_centre, h_centre, radius, TFT_BLACK);
+    }
+    lastTheta = theta;
 
-    tft.fillSmoothCircle(w_centre, h_centre, radius, TFT_BLACK);
+    tft.drawLine(w_centre, h_centre, w_centre - radius*cos(theta * (PI/40) - (PI/2)), h_centre + radius*sin(theta * (PI/40) - (PI/2)), TFT_WHITE);
 
   } 
   else {
@@ -104,7 +112,6 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
   render();
   //Serial.println(t_str);
 }
