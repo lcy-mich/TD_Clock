@@ -18,7 +18,9 @@ TFT_eSPI tft = TFT_eSPI();
 
 struct tm t_struct;
 char t_str[9];
-float lastTheta = 0;
+float lastSecTheta = 0;
+float lastMinTheta = 0;
+float lastHourTheta = 0;
 bool isAnalog = false;
 bool clearedScreen = false;
 
@@ -78,19 +80,33 @@ void render() {
     uint8_t w_centre = WIDTH*.5;
 
     uint8_t radius = h_centre-1;
-    
-    float secstheta = t_struct.tm_sec;
-    float hourtheta = t_struct.tm_hour*60 + t_struct.tm_min;
-    if (secstheta - lastTheta > 1) {
-      tft.fillSmoothCircle(w_centre, h_centre, radius, TFT_BLACK);
-    }
-    lastTheta = secstheta;
+
+    uint8_t x;
+    uint8_t y;
 
     //hour hand
-    tft.drawLine(w_centre, h_centre, w_centre - radius*cos(theta * (PI/360) - (PI/2)), h_centre + radius*sin(theta * (PI/360) - (PI/2)), TFT_WHITE);
+    float hourtheta = t_struct.tm_hour*60 + t_struct.tm_min;
+    if (hourtheta != lastHourTheta) {
+      tft.drawLine(w_centre, h_centre, w_centre + (radius-25)*cos(lastHourTheta * (PI/360) - (PI/2)), h_centre + (radius-25)*sin(lastHourTheta * (PI/360) - (PI/2)), TFT_BLACK);
+    }
+    lastHourTheta;
+    tft.drawLine(w_centre, h_centre, w_centre + (radius-25)*cos(hourtheta * (PI/360) - (PI/2)), h_centre + (radius-25)*sin(hourtheta * (PI/360) - (PI/2)), TFT_WHITE);
+
+    //min hand
+    float mintheta  = t_struct.tm_min*60 + t_struct.tm_sec;
+    if (mintheta != lastMinTheta) {
+      tft.drawLine(w_centre, h_centre, w_centre + (radius-15)*cos(lastMinTheta * (PI/1800) - (PI/2)), h_centre + (radius-15)*sin(lastMinTheta * (PI/1800) - (PI/2)), TFT_BLACK);   
+    }
+    lastMinTheta = mintheta;
+    tft.drawLine(w_centre, h_centre, w_centre + (radius-15)*cos(mintheta * (PI/1800) - (PI/2)), h_centre + (radius-15)*sin(mintheta * (PI/1800) - (PI/2)), TFT_WHITE);   
 
     //second hand
-    tft.drawLine(w_centre, h_centre, w_centre - (radius-20)*cos(theta * (PI/30) - (PI/2)), h_centre + (radius-20)*sin(theta * (PI/30) - (PI/2)), TFT_WHITE)
+    float secstheta = t_struct.tm_sec;
+    if (secstheta != lastSecTheta) {
+      tft.drawLine(w_centre, h_centre, w_centre + (radius-5)*cos(lastSecTheta * (PI/30) - (PI/2)), h_centre + (radius-5)*sin(lastSecTheta * (PI/30) - (PI/2)), TFT_BLACK);
+    }
+    lastSecTheta = secstheta;
+    tft.drawLine(w_centre, h_centre, w_centre + (radius-5)*cos(secstheta * (PI/30) - (PI/2)), h_centre + (radius-5)*sin(secstheta * (PI/30) - (PI/2)), TFT_RED);
 
   } 
   else {
