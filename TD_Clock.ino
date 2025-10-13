@@ -79,13 +79,18 @@ void render() {
 
     uint8_t radius = h_centre-1;
     
-    float theta = 3*60;
-    if (theta - lastTheta > 1) {
+    float secstheta = t_struct.tm_sec;
+    float hourtheta = t_struct.tm_hour*60 + t_struct.tm_min;
+    if (secstheta - lastTheta > 1) {
       tft.fillSmoothCircle(w_centre, h_centre, radius, TFT_BLACK);
     }
-    lastTheta = theta;
+    lastTheta = secstheta;
 
-    tft.drawLine(w_centre, h_centre, w_centre - radius*cos(theta * (PI/40) - (PI/2)), h_centre + radius*sin(theta * (PI/40) - (PI/2)), TFT_WHITE);
+    //hour hand
+    tft.drawLine(w_centre, h_centre, w_centre - radius*cos(theta * (PI/360) - (PI/2)), h_centre + radius*sin(theta * (PI/360) - (PI/2)), TFT_WHITE);
+
+    //second hand
+    tft.drawLine(w_centre, h_centre, w_centre - (radius-20)*cos(theta * (PI/30) - (PI/2)), h_centre + (radius-20)*sin(theta * (PI/30) - (PI/2)), TFT_WHITE)
 
   } 
   else {
