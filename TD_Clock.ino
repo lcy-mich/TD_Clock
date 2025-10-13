@@ -89,7 +89,7 @@ void render() {
     if (hourtheta != lastHourTheta) {
       tft.drawLine(w_centre, h_centre, w_centre + (radius-35)*cos(lastHourTheta * (PI/360) - (PI/2)), h_centre + (radius-35)*sin(lastHourTheta * (PI/360) - (PI/2)), TFT_BLACK);
     }
-    lastHourTheta;
+    lastHourTheta = hourtheta;
     tft.drawLine(w_centre, h_centre, w_centre + (radius-35)*cos(hourtheta * (PI/360) - (PI/2)), h_centre + (radius-35)*sin(hourtheta * (PI/360) - (PI/2)), TFT_WHITE);
 
     //min hand
