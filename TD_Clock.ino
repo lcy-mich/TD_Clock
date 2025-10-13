@@ -134,5 +134,5 @@ void setup() {
 
 void loop() {
   render();
-  //Serial.println(t_str);
+  Serial.println(t_str);
 }
