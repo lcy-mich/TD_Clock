@@ -1,6 +1,6 @@
 # TD_Clock
 
-Digital/ Analog Clock code for the first challenge of ENGF0001, as seen in [this video](https://youtu.be/Vvrx6xLA1Fw).
+Digital/ Analog Clock code for the first challenge of ENGF0001, as seen in [this video](https://youtu.be/7oAPHjUdaYc).
 
 Displays the digital clock first by default, and on either button clicks, switches to analog and back.
 Syncs with GMT+0 with Daylight Saving using `pool.ntp.org` with the time.h library.
